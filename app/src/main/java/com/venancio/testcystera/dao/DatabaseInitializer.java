@@ -20,7 +20,10 @@ public class DatabaseInitializer {
         PopulateDbAsync task = new PopulateDbAsync(db,users);
         task.execute();
     }
-
+    public static void logAsync(@NonNull final AppDatabase db,List<LogUsr>  users) {
+        LogDbAsync task = new LogDbAsync(db,users);
+        task.execute();
+    }
     private static User addUser(final AppDatabase db, User user) {
         db.userDao().insertAll(user);
         return user;

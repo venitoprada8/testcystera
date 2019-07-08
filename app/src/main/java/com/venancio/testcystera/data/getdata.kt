@@ -9,6 +9,9 @@ import android.widget.TextView
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.venancio.testcystera.R
+import com.venancio.testcystera.dao.DatabaseInitializer
+import com.venancio.testcystera.database.AppDatabase
+import com.venancio.testcystera.entity.LogUsr
 import com.venancio.testcystera.utils.GpsClass
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -18,7 +21,8 @@ import kotlinx.coroutines.withContext
 
 
 /******corrutina genera una peticion get ********/
-fun callWebServiceLicenseM(applicationContext:Context,respuesta: (Boolean) -> Unit) {
+fun callWebServiceLicenseM(applicationContext:Context,Email:String,respuesta: (Boolean) -> Unit) {
+     var usr: List<LogUsr>
 
     CoroutineScope(Dispatchers.IO).launch {
         var Gp= GpsClass(applicationContext)
@@ -32,6 +36,11 @@ fun callWebServiceLicenseM(applicationContext:Context,respuesta: (Boolean) -> Un
                     val objResponse = Gson().fromJson(response.body(), responsedata::class.java)
                     var da = objResponse.countryCode
                     Log.i("Suses", da)
+                    usr= listOf<LogUsr>()
+                    usr[0].email=Email
+                    usr[0].fecha=objResponse.time
+                    DatabaseInitializer.logAsync(AppDatabase.getAppDatabase(applicationContext), usr)
+
                     respuesta(true)
                 } else {
                     //toast("Error: ${response.code()}")
