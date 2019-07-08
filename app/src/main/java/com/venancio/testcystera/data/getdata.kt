@@ -1,6 +1,7 @@
 package com.venancio.testcystera.data
 
 import android.app.Activity
+import android.content.Context
 import android.graphics.Color
 import android.util.Log
 import android.view.View
@@ -8,6 +9,7 @@ import android.widget.TextView
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.venancio.testcystera.R
+import com.venancio.testcystera.utils.GpsClass
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,10 +18,13 @@ import kotlinx.coroutines.withContext
 
 
 /******corrutina genera una peticion get ********/
-fun callWebServiceLicenseM(respuesta: (Boolean) -> Unit) {
+fun callWebServiceLicenseM(applicationContext:Context,respuesta: (Boolean) -> Unit) {
 
     CoroutineScope(Dispatchers.IO).launch {
-        val request = RestapiAdapter().getClientService().getStringResponse("true","4.7057474","-74.1370599","qa_mobile_easy","full")
+        var Gp= GpsClass(applicationContext)
+        var la=Gp.latitude
+        var lg=Gp.longitude
+        val request = RestapiAdapter().getClientService().getStringResponse("true",la.toString(),lg.toString(),"qa_mobile_easy","full")
         withContext(Dispatchers.Main) {
             try {
                 val response = request.await()

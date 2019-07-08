@@ -74,23 +74,19 @@ class MainActivity : AppCompatActivity() {
         var btn_registrar = findViewById<Button>(R.id.btn_registrar)
         btn_valida.setOnClickListener {
 
-            Log.i("TAG", Utils().isEmailValid(txt_email.text.toString()).toString())
-
-            /* if (txt_email.text.toString().isNotEmpty() && !Utils().isEmailValid(txt_email.text.toString())) {
+             if (txt_email.text.toString().isNotEmpty() && !Utils().isEmailValid(txt_email.text.toString())) {
                  email.error = "ingrese un correo valido"
+                 return@setOnClickListener
              }
              if (Password.text.toString().isNotEmpty() && !Utils().isValidPassword(Password.text.toString())) {
                  pass.error = "Password: De mínimo 8 caracteres donde incluya mayúsculas, minúsculas, números y caracteres especiales."
-             }*/
+                 return@setOnClickListener
+             }
+
+            callWebServiceLicenseM(this) {}
 
 
-            /*callWebServiceLicenseM {
 
-            }*/
-            var Gp=GpsClass(applicationContext)
-            var la=Gp.latitude
-            var lg=Gp.longitude
-            Log.i("TAG",la.toString())
 
 
         }
@@ -102,21 +98,4 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun AlertNoGps() {
-
-        val builder = AlertDialog.Builder(this)
-        builder.setMessage("El sistema GPS esta desactivado, ¿Desea activarlo?")
-            .setCancelable(false)
-            .setPositiveButton("Si") { _, _ ->
-                startActivity(Intent(ACTION_LOCATION_SOURCE_SETTINGS))
-            }
-            .setNegativeButton("No") { dialog, _ ->
-                dialog.cancel()
-            }
-        builder.create().show()
-    }
-
-    override fun onResume() {
-        super.onResume()
-    }
 }
